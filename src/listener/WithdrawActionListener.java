@@ -2,7 +2,9 @@ package listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -10,6 +12,7 @@ import data.Account;
 import data.MainAccount;
 import data.SavingAccount;
 import data.SeriousSavingAccount;
+import data.Transaction;
 import dataController.DataController;
 import ui.HomeUI;
 
@@ -85,11 +88,14 @@ public class WithdrawActionListener implements ActionListener{
 			
 			if(confirmation == JOptionPane.YES_OPTION )
 			{	
+				String userNo = ui.getLblIdValue().getText();
+				int userNum = 0;
+				String name = ui.getLblNameValue().getText();
 				
 				String accountType = ui.getSpinnerWithdrawFrom().getValue().toString();
 //				System.out.println(accountType);
 				String withdrawAmount = ui.getTxtWithdrawAmount().getText();
-				int withdraw = 0;
+				double withdraw = 0;
 				String withdrawDescription = ui.getTxtWithdrawDescription().getText();
 				
 				String custId = ui.getLblId().getText();
@@ -97,11 +103,25 @@ public class WithdrawActionListener implements ActionListener{
 				
 				Boolean all_data_valid = true;
 			    String Error_Message = "";
+			    Transaction info = new Transaction();
 			    
+			    if(userNo.length() >= 0) {
+					try {
+					  userNum = Integer.parseInt(userNo);
+					}catch(NumberFormatException ex) {
+						Error_Message += "+ User id must be a number.\n";
+						all_data_valid = false;
+					}						
+				}
+				else if (userNo == "") 
+				{
+					Error_Message += "+ User id is empty.\n";
+					all_data_valid = false;
+				}
 			    
 				if(withdrawAmount.length()>0) {
 					try {
-					  withdraw = Integer.parseInt(withdrawAmount);
+					  withdraw = Double.parseDouble(withdrawAmount);
 					  if(withdraw <= 0) {
 						  Error_Message += "+ Amount must be a positive number.\n";
 						  all_data_valid = false;
@@ -175,7 +195,12 @@ public class WithdrawActionListener implements ActionListener{
 						for (String account : newMainData) {
 							this.dataHandler.writeCustomerMainData(account);
 						}
-						JOptionPane.showMessageDialog(ui, "+ Withdraw Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+						//Write transaction info into file
+						
+						String transaction = info.saveTransaction(userNum, name, withdrawDescription, withdraw);
+						this.dataHandler.writeMainTransactionData(transaction);
+						
+						JOptionPane.showMessageDialog(ui, "+ Withdraw Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						
 					}
 					else if(mainCst.getId() == custIdNum && accountType.equalsIgnoreCase("Saving")) {
@@ -216,7 +241,13 @@ public class WithdrawActionListener implements ActionListener{
 							for (String account : newSavingData) {
 								this.dataHandler.writeCustomerSavingData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Withdraw Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							
+							//Write transaction info into file
+							
+							String transaction = info.saveTransaction(userNum, name, withdrawDescription, withdraw);
+							this.dataHandler.writeSavingTransactionData(transaction);
+							
+							JOptionPane.showMessageDialog(ui, "+ Withdraw Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 							
 							
 							
@@ -265,7 +296,12 @@ public class WithdrawActionListener implements ActionListener{
 							for (String account : newSeriousData) {
 								this.dataHandler.writeCustomerSeriousData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Withdraw Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							//Write transaction info into file
+							
+							String transaction = info.saveTransaction(userNum, name, withdrawDescription, withdraw);
+							this.dataHandler.writeSeriousTransactionData(transaction);
+							
+							JOptionPane.showMessageDialog(ui, "+ Withdraw Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 							
 						}
 						else {

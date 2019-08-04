@@ -21,8 +21,6 @@ public class LogOutActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ui.getBtnLogOut()) {
 			this.ui.setVisible(false);
-			SignInUI uiSignIn = new SignInUI();
-			uiSignIn.setVisible(true);
 			//Call back to main 
 			MyApplication main = new MyApplication();
 			main.main(null);

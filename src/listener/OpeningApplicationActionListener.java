@@ -381,6 +381,21 @@ public class OpeningApplicationActionListener implements ActionListener {
 							JButton btnTransfer = uiHome.getBtnTransferPanel();
 							btnTransfer.addActionListener(listenerForTransfer);
 							
+							//
+							MainDetailActionListener listenerForViewMain = new MainDetailActionListener(uiHome, dc);
+							JButton btnViewMain = uiHome.getBtnMainDetails();
+							btnViewMain.addActionListener(listenerForViewMain);
+							
+							//
+							SavingDetailActionListener listenerForViewSaving = new SavingDetailActionListener(uiHome, dc);
+							JButton btnViewSaving = uiHome.getBtnSavingDetails();
+							btnViewSaving.addActionListener(listenerForViewSaving);
+							
+							//
+							SeriousDetailActionListener listenerForViewSerious = new SeriousDetailActionListener(uiHome, dc);
+							JButton btnViewSerious = uiHome.getBtnSeriousDetails();
+							btnViewSerious.addActionListener(listenerForViewSerious);
+							
 						}
 					}catch(NullPointerException e) {
 						JOptionPane.showMessageDialog(ui, "+ Incorrect username or pin numbers." , "Info Message", JOptionPane.ERROR_MESSAGE);

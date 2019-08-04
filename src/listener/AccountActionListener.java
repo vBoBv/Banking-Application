@@ -95,7 +95,7 @@ public class AccountActionListener implements ActionListener{
 				MainAccount thisCust = customerMainData.get(index);
 				
 				double mainBalance = thisCust.getBalance();
-				ui.getLblMainBalance().setText(mainBalance+"");
+				ui.getLblMainBalance().setText("$"+mainBalance+"");
 			
 			}
 			if(mainCst.getId() == custIdNum) {
@@ -104,7 +104,7 @@ public class AccountActionListener implements ActionListener{
 				SavingAccount thisCust = customerSavingData.get(index);
 				
 				double savingBalance = thisCust.getBalance();
-				ui.getLblSavingBalance().setText(savingBalance+"");
+				ui.getLblSavingBalance().setText("$"+savingBalance+"");
 				
 			}
 			if(mainCst.getId() == custIdNum) {
@@ -113,7 +113,7 @@ public class AccountActionListener implements ActionListener{
 				SeriousSavingAccount thisCust = customerSeriousSavingData.get(index);
 				
 				double seriousBalance = thisCust.getBalance();
-				ui.getLblSeriousBalance().setText(seriousBalance+"");
+				ui.getLblSeriousBalance().setText("$"+seriousBalance+"");
 				
 			}
 		}

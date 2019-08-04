@@ -25,13 +25,13 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 
 public class HomeUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtAmountTo;
 	private JTextField txtDescription;
-	private JTextField txtTodayDate;
 	private JTextField txtDepositAmount;
 	private JTextField txtDepositDescription;
 	private JTextField txtWithdrawAmount;
@@ -55,10 +55,83 @@ public class HomeUI extends JFrame {
 	private JSpinner SpinnerFrom;
 	private JSpinner SpinnerTo;
 	private JButton btnTransferPanel;
+	private JTable mainTable;
+	private JTable savingTable;
+	private JTable seriousTable;
 	
-	public JTextField getTxtTodayDate() {
-		return txtTodayDate;
+	private JButton btnMainDetails;
+	private JButton btnSavingDetails;
+	private JButton btnSeriousDetails;
+	
+	private JLabel lblMainAccountNumber;
+	private JLabel lblMainBalancePanel;
+	private JLabel lblSavingAccountBalancePanel;
+	private JLabel lblSavingAccountNumber;
+	private JLabel lblSeriousAccountNumber;
+	private JLabel lblSeriousBalancePanel;
+	
+	
+	
+	public JLabel getLblMainAccountNumber() {
+		return lblMainAccountNumber;
 	}
+
+	public JLabel getLblMainBalancePanel() {
+		return lblMainBalancePanel;
+	}
+
+	public JLabel getLblSavingAccountBalancePanel() {
+		return lblSavingAccountBalancePanel;
+	}
+
+	public JLabel getLblSavingAccountNumber() {
+		return lblSavingAccountNumber;
+	}
+
+	public JLabel getLblSeriousAccountNumber() {
+		return lblSeriousAccountNumber;
+	}
+
+	public JLabel getLblSeriousBalancePanel() {
+		return lblSeriousBalancePanel;
+	}
+
+	public JTable getMainTable() {
+		return mainTable;
+	}
+
+	public JTable getSavingTable() {
+		return savingTable;
+	}
+
+	public JTable getSeriousTable() {
+		return seriousTable;
+	}
+
+	public JTable getTable() {
+		return mainTable;
+	}
+
+	public JTable getTable_1() {
+		return savingTable;
+	}
+
+	public JTable getTable_2() {
+		return seriousTable;
+	}
+
+	public JButton getBtnMainDetails() {
+		return btnMainDetails;
+	}
+
+	public JButton getBtnSavingDetails() {
+		return btnSavingDetails;
+	}
+
+	public JButton getBtnSeriousDetails() {
+		return btnSeriousDetails;
+	}
+
 
 	public JSpinner getSpinnerFrom() {
 		return SpinnerFrom;
@@ -146,10 +219,6 @@ public class HomeUI extends JFrame {
 
 	public JTextField getTxtDescription() {
 		return txtDescription;
-	}
-
-	public JTextField getLblTodayDate() {
-		return txtTodayDate;
 	}
 
 	public JTextField getTxtDepositAmount() {
@@ -411,25 +480,13 @@ public class HomeUI extends JFrame {
 		transferPanel.add(txtDescription);
 		txtDescription.setColumns(10);
 		
-		JLabel lblDate = new JLabel("Date:");
-		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDate.setBounds(128, 272, 72, 29);
-		transferPanel.add(lblDate);
-		
-		txtTodayDate = new JTextField();
-		txtTodayDate.setBackground(Color.WHITE);
-		txtTodayDate.setEditable(false);
-		txtTodayDate.setColumns(10);
-		txtTodayDate.setBounds(222, 275, 150, 22);
-		transferPanel.add(txtTodayDate);
-		
 		btnTransferPanel = new JButton("Transfer");
 		btnTransferPanel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnTransferPanel.setBackground(Color.LIGHT_GRAY);
-		btnTransferPanel.setBounds(257, 320, 97, 25);
+		btnTransferPanel.setBounds(250, 260, 97, 25);
 		transferPanel.add(btnTransferPanel);
 		
 		JPanel depositPanel = new JPanel();
@@ -524,13 +581,13 @@ public class HomeUI extends JFrame {
 		mainDetails.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblMainAccountNumber = new JLabel("Account Number");
+		lblMainAccountNumber = new JLabel("Account Number");
 		lblMainAccountNumber.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblMainAccountNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMainAccountNumber.setBounds(0, 0, 369, 29);
 		panel.add(lblMainAccountNumber);
 		
-		JLabel lblMainBalancePanel = new JLabel("$0.00");
+		lblMainBalancePanel = new JLabel("$0.00");
 		lblMainBalancePanel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblMainBalancePanel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMainBalancePanel.setBounds(0, 30, 369, 66);
@@ -547,6 +604,23 @@ public class HomeUI extends JFrame {
 		lblTransaction.setBounds(0, 165, 480, 30);
 		mainDetails.add(lblTransaction);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 193, 480, 312);
+		mainDetails.add(scrollPane);
+		
+		mainTable = new JTable();
+		mainTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Date", "Description", "Amount"
+			}
+		));
+		mainTable.getColumnModel().getColumn(0).setPreferredWidth(133);
+		mainTable.getColumnModel().getColumn(1).setPreferredWidth(261);
+		mainTable.getColumnModel().getColumn(2).setPreferredWidth(84);
+		scrollPane.setViewportView(mainTable);
+		
 		JPanel savingDetails = new JPanel();
 		layeredPane.add(savingDetails, "name_496034970318184");
 		savingDetails.setLayout(null);
@@ -557,13 +631,13 @@ public class HomeUI extends JFrame {
 		panel_2.setBounds(54, 13, 369, 122);
 		savingDetails.add(panel_2);
 		
-		JLabel lblSavingAccountNumber = new JLabel("Account Number");
+		lblSavingAccountNumber = new JLabel("Account Number");
 		lblSavingAccountNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSavingAccountNumber.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblSavingAccountNumber.setBounds(0, 0, 369, 29);
 		panel_2.add(lblSavingAccountNumber);
 		
-		JLabel lblSavingAccountBalancePanel = new JLabel("$0.00");
+		lblSavingAccountBalancePanel = new JLabel("$0.00");
 		lblSavingAccountBalancePanel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSavingAccountBalancePanel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblSavingAccountBalancePanel.setBounds(0, 30, 369, 66);
@@ -580,6 +654,31 @@ public class HomeUI extends JFrame {
 		lblTransactionHistory.setBounds(0, 165, 480, 30);
 		savingDetails.add(lblTransactionHistory);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(0, 193, 480, 312);
+		savingDetails.add(scrollPane_1);
+		
+		savingTable = new JTable();
+		savingTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Date", "Description", "Amount"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, true, true
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		savingTable.getColumnModel().getColumn(0).setResizable(false);
+		savingTable.getColumnModel().getColumn(0).setPreferredWidth(133);
+		savingTable.getColumnModel().getColumn(1).setPreferredWidth(264);
+		savingTable.getColumnModel().getColumn(2).setPreferredWidth(84);
+		scrollPane_1.setViewportView(savingTable);
+		
 		JPanel seriousSavingDetails = new JPanel();
 		layeredPane.add(seriousSavingDetails, "name_496360876593620");
 		seriousSavingDetails.setLayout(null);
@@ -590,13 +689,13 @@ public class HomeUI extends JFrame {
 		panel_3.setBounds(54, 13, 369, 122);
 		seriousSavingDetails.add(panel_3);
 		
-		JLabel lblSeriousAccountNumber = new JLabel("Account Number");
+		lblSeriousAccountNumber = new JLabel("Account Number");
 		lblSeriousAccountNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSeriousAccountNumber.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		lblSeriousAccountNumber.setBounds(0, 0, 369, 29);
 		panel_3.add(lblSeriousAccountNumber);
 		
-		JLabel lblSeriousBalancePanel = new JLabel("$0.00");
+		lblSeriousBalancePanel = new JLabel("$0.00");
 		lblSeriousBalancePanel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSeriousBalancePanel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblSeriousBalancePanel.setBounds(0, 30, 369, 66);
@@ -612,6 +711,23 @@ public class HomeUI extends JFrame {
 		label_3.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		label_3.setBounds(0, 165, 480, 30);
 		seriousSavingDetails.add(label_3);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(0, 193, 480, 312);
+		seriousSavingDetails.add(scrollPane_2);
+		
+		seriousTable = new JTable();
+		seriousTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Date", "Description", "Amount"
+			}
+		));
+		seriousTable.getColumnModel().getColumn(0).setPreferredWidth(133);
+		seriousTable.getColumnModel().getColumn(1).setPreferredWidth(264);
+		seriousTable.getColumnModel().getColumn(2).setPreferredWidth(84);
+		scrollPane_2.setViewportView(seriousTable);
 		
 		
 		btnAccount = new JButton("Accounts");
@@ -679,8 +795,7 @@ public class HomeUI extends JFrame {
 		});
 		btnHome.setBackground(Color.LIGHT_GRAY);
 		
-		JButton btnMainDetails = new JButton("View Details");
-		btnMainDetails.setEnabled(false);
+		btnMainDetails = new JButton("View Details");
 		btnMainDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layeredPane.removeAll();
@@ -694,8 +809,7 @@ public class HomeUI extends JFrame {
 		btnMainDetails.setBounds(97, 93, 124, 25);
 		mainAcc.add(btnMainDetails);
 		
-		JButton btnSavingDetails = new JButton("View Details");
-		btnSavingDetails.setEnabled(false);
+		btnSavingDetails = new JButton("View Details");
 		btnSavingDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
@@ -709,8 +823,7 @@ public class HomeUI extends JFrame {
 		btnSavingDetails.setBounds(97, 93, 124, 25);
 		savingAcc.add(btnSavingDetails);
 		
-		JButton btnSeriousDetails = new JButton("View Details");
-		btnSeriousDetails.setEnabled(false);
+		btnSeriousDetails = new JButton("View Details");
 		btnSeriousDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();

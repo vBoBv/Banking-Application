@@ -17,6 +17,7 @@ import data.Customer;
 import data.MainAccount;
 import data.SavingAccount;
 import data.SeriousSavingAccount;
+import data.Transaction;
 
 
 public class DataController {
@@ -24,7 +25,70 @@ public class DataController {
 	private final String customerSavingData = "data/customerSavingData.csv";
 	private final String customerSeriousData = "data/customerSeriousSavingData.csv";
 	private final String customerLoginData = "data/customerLoginData.csv";
+	private final String mainTransaction = "data/mainTransaction.csv";
+	private final String savingTransaction = "data/savingTransaction.csv";
+	private final String seriousTransaction = "data/seriousTransaction.csv";
 	
+	
+	//Write saving transaction into file
+	public void writeSeriousTransactionData(String mainData) {
+		PrintWriter WriterForCustomer = null;
+		try {
+			File file = new File(seriousTransaction);
+			if(file.exists() != true) {
+				file.getParentFile().mkdir();
+			}
+			WriterForCustomer = new PrintWriter(new FileWriter(seriousTransaction, true));
+			WriterForCustomer.println(mainData);
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			WriterForCustomer.close();
+		}
+	}
+		
+	
+	//Write saving transaction into file
+	public void writeSavingTransactionData(String mainData) {
+		PrintWriter WriterForCustomer = null;
+		try {
+			File file = new File(savingTransaction);
+			if(file.exists() != true) {
+				file.getParentFile().mkdir();
+			}
+			WriterForCustomer = new PrintWriter(new FileWriter(savingTransaction, true));
+			WriterForCustomer.println(mainData);
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			WriterForCustomer.close();
+		}
+	}
+	
+	//Write main transaction into file
+	public void writeMainTransactionData(String mainData) {
+		PrintWriter WriterForCustomer = null;
+		try {
+			File file = new File(mainTransaction);
+			if(file.exists() != true) {
+				file.getParentFile().mkdir();
+			}
+			WriterForCustomer = new PrintWriter(new FileWriter(mainTransaction, true));
+			WriterForCustomer.println(mainData);
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			WriterForCustomer.close();
+		}
+	}
+	
+	//Write main customer into file
 	public void writeCustomerMainData(String mainData) {
 		PrintWriter WriterForCustomer = null;
 		try {
@@ -42,7 +106,7 @@ public class DataController {
 			WriterForCustomer.close();
 		}
 	}
-	
+	//Write saving customer into file
 	public void writeCustomerSavingData(String formData) {
 		PrintWriter WriterForCustomer = null;
 		try {
@@ -60,7 +124,7 @@ public class DataController {
 			WriterForCustomer.close();
 		}
 	}
-	
+	//Write serious saving customer into file
 	public void writeCustomerSeriousData(String formData) {
 		PrintWriter WriterForCustomer = null;
 		try {
@@ -78,7 +142,7 @@ public class DataController {
 			WriterForCustomer.close();
 		}
 	}
-	
+	//Write username and password into file
 	public void writeCustomerLoginData(String formData) {
 		PrintWriter WriterForCustomer = null;
 		try {
@@ -96,7 +160,7 @@ public class DataController {
 			WriterForCustomer.close();
 		}
 	}
-	
+	//Overwrite main data
 	public void overwriteMainData(){
 		PrintWriter Overwriter = null;
 		try {
@@ -117,7 +181,7 @@ public class DataController {
 			Overwriter.close();
 		}
 	}
-	
+	//Overwrite saving data
 	public void overwriteSavingData(){
 		PrintWriter Overwriter = null;
 		try {
@@ -138,7 +202,7 @@ public class DataController {
 			Overwriter.close();
 		}
 	}
-	
+	//Overwrite serious saving data
 	public void overwriteSeriousData(){
 		PrintWriter Overwriter = null;
 		try {
@@ -160,7 +224,7 @@ public class DataController {
 		}
 	}
 	
-	
+	//Read data from main account
 	public static ArrayList<MainAccount> readCustomerMainFile(String userData) {
 		ArrayList<MainAccount> accountArrayList = new ArrayList<MainAccount>();
 		try {
@@ -190,7 +254,7 @@ public class DataController {
 		
 		return accountArrayList;
 	}
-	
+	//Read data from saving account
 	public static ArrayList<SavingAccount> readCustomerSavingFile(String userData) {
 		ArrayList<SavingAccount> accountArrayList = new ArrayList<SavingAccount>();
 		try {
@@ -220,7 +284,7 @@ public class DataController {
 		
 		return accountArrayList;
 	}
-	
+	//Read data from serious saving account
 	public static ArrayList<SeriousSavingAccount> readCustomerSeriousSavingFile(String userData) {
 		ArrayList<SeriousSavingAccount> accountArrayList = new ArrayList<SeriousSavingAccount>();
 		try {
@@ -250,7 +314,7 @@ public class DataController {
 		
 		return accountArrayList;
 	}
-	
+	//Read the login file
 	public static ArrayList<Customer> readLoginFile(String userData) {
 		ArrayList<Customer> loginArrayList = new ArrayList<Customer>();
 		try {
@@ -276,5 +340,34 @@ public class DataController {
 		
 		return loginArrayList;
 	}
+	
+	//Read the login file
+		public static ArrayList<Transaction> readTransactionFile(String userData) {
+			ArrayList<Transaction> transactionArrayList = new ArrayList<Transaction>();
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(userData));
+				String line = reader.readLine();
+				while (line != null) {
+					StringTokenizer tokenizer = new StringTokenizer(line, ",");
+					
+					int id = Integer.parseInt(tokenizer.nextToken());
+					String username = tokenizer.nextToken();
+					String date = tokenizer.nextToken();
+					String description = tokenizer.nextToken();
+					double amount = Double.parseDouble(tokenizer.nextToken());
+					
+					transactionArrayList.add(new Transaction(id, username, date, description, amount));
+					line = reader.readLine();
+					
+				}
+				reader.close();
+			}catch(FileNotFoundException e) {
+				JOptionPane.showMessageDialog(null, "Unable to open file");
+			}catch(IOException e) {
+				JOptionPane.showMessageDialog(null, "Unable to read");
+			}
+			
+			return transactionArrayList;
+		}
 
 }

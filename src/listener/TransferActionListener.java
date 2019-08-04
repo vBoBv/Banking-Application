@@ -2,13 +2,16 @@ package listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
 import data.MainAccount;
 import data.SavingAccount;
 import data.SeriousSavingAccount;
+import data.Transaction;
 import dataController.DataController;
 import ui.HomeUI;
 
@@ -86,16 +89,16 @@ public class TransferActionListener implements ActionListener {
 				String transferAmount = ui.getTxtAmountTo().getText();
 				double transfer = 0;
 				String transferDescription = ui.getTxtDescription().getText();
-				String transferDate = ui.getTxtTodayDate().getText();
 				String custId = ui.getLblId().getText();
 				int custIdNum = 0;
-				
+				String name = ui.getLblNameValue().getText();
 				Boolean all_data_valid = true;
 			    String Error_Message = "";
+			    Transaction info = new Transaction();
 			   
 			    if(transferAmount.length()>0) {
 					try {
-					  transfer = Integer.parseInt(transferAmount);
+					  transfer = Double.parseDouble(transferAmount);
 					  if(transfer <= 0) {
 						  Error_Message += "+ Amount must be a positive number.\n";
 						  all_data_valid = false;
@@ -215,7 +218,14 @@ public class TransferActionListener implements ActionListener {
 								for (String account : newMainData) {
 									this.dataHandler.writeCustomerMainData(account);
 								}
-								JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+								
+								//Write transaction info into file
+								
+								String transaction = info.saveTransaction(custIdNum, name, transferDescription, transfer);
+								this.dataHandler.writeMainTransactionData(transaction);
+								this.dataHandler.writeSavingTransactionData(transaction);
+								
+								JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 							}	
 			    	}
 					else if (spinnerFrom.equals("Main") && spinnerTo.equals("Serious Saving")) {
@@ -282,7 +292,12 @@ public class TransferActionListener implements ActionListener {
 							for (String account : newMainData) {
 								this.dataHandler.writeCustomerMainData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							//Write transaction info into file
+							
+							String transaction = info.saveTransaction(custIdNum, name, transferDescription, transfer);
+							this.dataHandler.writeMainTransactionData(transaction);
+							this.dataHandler.writeSeriousTransactionData(transaction);
+							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						}
 		    			else {
 							JOptionPane.showMessageDialog(ui, "Not enough money" , "Info Message", JOptionPane.ERROR_MESSAGE);
@@ -355,7 +370,12 @@ public class TransferActionListener implements ActionListener {
 							for (String account : newMainData) {
 								this.dataHandler.writeCustomerMainData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							//Write transaction info into file
+							
+							String transaction = info.saveTransaction(custIdNum, name, transferDescription, transfer);
+							this.dataHandler.writeSavingTransactionData(transaction);
+							this.dataHandler.writeMainTransactionData(transaction);
+							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						}
 		    			else {
 							JOptionPane.showMessageDialog(ui, "Not enough money" , "Info Message", JOptionPane.ERROR_MESSAGE);
@@ -430,7 +450,11 @@ public class TransferActionListener implements ActionListener {
 							for (String account : newSeriousData) {
 								this.dataHandler.writeCustomerSeriousData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							//Write transaction info into file
+							String transaction = info.saveTransaction(custIdNum, name, transferDescription, transfer);
+							this.dataHandler.writeSavingTransactionData(transaction);
+							this.dataHandler.writeSeriousTransactionData(transaction);
+							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 		    			}
 		    			else {
 							JOptionPane.showMessageDialog(ui, "Not enough money" , "Info Message", JOptionPane.ERROR_MESSAGE);
@@ -500,7 +524,11 @@ public class TransferActionListener implements ActionListener {
 							for (String account : newMainData) {
 								this.dataHandler.writeCustomerMainData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							//Write transaction info into file
+							String transaction = info.saveTransaction(custIdNum, name, transferDescription, transfer);
+							this.dataHandler.writeSeriousTransactionData(transaction);
+							this.dataHandler.writeMainTransactionData(transaction);
+							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						}
 		    			else {
 							JOptionPane.showMessageDialog(ui, "Not enough money" , "Info Message", JOptionPane.ERROR_MESSAGE);
@@ -575,7 +603,11 @@ public class TransferActionListener implements ActionListener {
 							for (String account : newSeriousData) {
 								this.dataHandler.writeCustomerSeriousData(account);
 							}
-							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+							//Write transaction info into file
+							String transaction = info.saveTransaction(custIdNum, name, transferDescription, transfer);
+							this.dataHandler.writeSeriousTransactionData(transaction);
+							this.dataHandler.writeSavingTransactionData(transaction);
+							JOptionPane.showMessageDialog(ui, "+ Transfer Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 		    			}
 		    			else {
 							JOptionPane.showMessageDialog(ui, "Not enough money" , "Info Message", JOptionPane.ERROR_MESSAGE);

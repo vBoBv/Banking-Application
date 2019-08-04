@@ -10,9 +10,11 @@ import data.Account;
 import data.MainAccount;
 import data.SavingAccount;
 import data.SeriousSavingAccount;
+import data.Transaction;
 import dataController.DataController;
 import ui.HomeUI;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DepositActionListener implements ActionListener{
 
@@ -85,10 +87,14 @@ public class DepositActionListener implements ActionListener{
 			if(confirmation == JOptionPane.YES_OPTION )
 			{	
 				
+				String userNo = ui.getLblIdValue().getText();
+				int userNum = 0;
+				String name = ui.getLblNameValue().getText();
+				
 				String accountType = ui.getSpinnerDepositTo().getValue().toString();
 
 				String depositAmount = ui.getTxtDepositAmount().getText();
-				int deposit = 0;
+				double deposit = 0;
 				String depositDescription = ui.getTxtDepositDescription().getText();
 				
 				String custId = ui.getLblId().getText();
@@ -96,11 +102,26 @@ public class DepositActionListener implements ActionListener{
 				
 				Boolean all_data_valid = true;
 			    String Error_Message = "";
+			    Transaction info = new Transaction();
 			    
+			    
+			    if(userNo.length() >= 0) {
+					try {
+					  userNum = Integer.parseInt(userNo);
+					}catch(NumberFormatException ex) {
+						Error_Message += "+ User id must be a number.\n";
+						all_data_valid = false;
+					}						
+				}
+				else if (userNo == "") 
+				{
+					Error_Message += "+ User id is empty.\n";
+					all_data_valid = false;
+				}
 			    
 				if(depositAmount.length()>0) {
 					try {
-					  deposit = Integer.parseInt(depositAmount);
+					  deposit = Double.parseDouble(depositAmount);
 					  if(deposit <= 0) {
 						  Error_Message += "+ Amount must be a positive number.\n";
 						  all_data_valid = false;
@@ -170,7 +191,12 @@ public class DepositActionListener implements ActionListener{
 						for (String account : newMainData) {
 							this.dataHandler.writeCustomerMainData(account);
 						}
-						JOptionPane.showMessageDialog(ui, "+ Deposit Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+						//Write transaction info into file
+						
+						String transaction = info.saveTransaction(userNum, name, depositDescription, deposit);
+						this.dataHandler.writeMainTransactionData(transaction);
+						
+						JOptionPane.showMessageDialog(ui, "+ Deposit Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						
 					}
 					else if(mainCst.getId() == custIdNum && accountType.equalsIgnoreCase("Saving")) {
@@ -209,7 +235,13 @@ public class DepositActionListener implements ActionListener{
 						for (String account : newSavingData) {
 							this.dataHandler.writeCustomerSavingData(account);
 						}
-						JOptionPane.showMessageDialog(ui, "+ Deposit Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+						
+						//Write transaction info into file
+						
+						String transaction = info.saveTransaction(userNum, name, depositDescription, deposit);
+						this.dataHandler.writeSavingTransactionData(transaction);
+						
+						JOptionPane.showMessageDialog(ui, "+ Deposit Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						
 					}
 					else if(mainCst.getId() == custIdNum && accountType.equalsIgnoreCase("Serious Saving")) {
@@ -248,7 +280,14 @@ public class DepositActionListener implements ActionListener{
 						for (String account : newSeriousData) {
 							this.dataHandler.writeCustomerSeriousData(account);
 						}
-						JOptionPane.showMessageDialog(ui, "+ Deposit Successful." , "Info Message", JOptionPane.ERROR_MESSAGE);
+						
+						//Write transaction info into file
+						
+						String transaction = info.saveTransaction(userNum, name, depositDescription, deposit);
+						this.dataHandler.writeSeriousTransactionData(transaction);
+						
+						
+						JOptionPane.showMessageDialog(ui, "+ Deposit Successful." , "Info Message", JOptionPane.INFORMATION_MESSAGE);
 						
 						
 					}
