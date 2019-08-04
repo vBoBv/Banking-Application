@@ -8,4 +8,5 @@
   <li>Three accounts will be generated automatically after the user sign ups.</li>
   <li>User can deposit, withdraw and transfer money from one account to another.</li>
   <li>User can also view every transaction in details.</li>
+  <li>Implemented Java Date API</li>
 </ul>
